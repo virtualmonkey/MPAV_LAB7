@@ -20,7 +20,7 @@ class ContactViewModel(application: Application): AndroidViewModel(application){
     fun delete(contact:Contact){
         repository.delete(contact)
     }
-    fun deleteAllContacts(contact: Contact){
+    fun deleteAllContacts(){
         repository.deleteAllContacts()
     }
     fun getAllContacts(): LiveData<List<Contact>> {
