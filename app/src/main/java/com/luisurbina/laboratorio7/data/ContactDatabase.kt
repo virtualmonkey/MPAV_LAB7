@@ -9,7 +9,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(entities = [Contact::class], version = 1)
 abstract class ContactDatabase: RoomDatabase() {
+
     abstract fun contactDao(): ContactDao
+
 
     companion object {
         private var instance: ContactDatabase? = null
