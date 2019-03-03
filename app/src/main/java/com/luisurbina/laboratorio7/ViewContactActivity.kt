@@ -82,7 +82,6 @@ class ViewContactActivity : AppCompatActivity() {
 
 
         startActivityForResult(intent, EDIT_CONTACT_REQUEST)
-        finish()
     }
 
 
@@ -110,6 +109,8 @@ class ViewContactActivity : AppCompatActivity() {
 
             currentId = contactToUpdate.id
             currentPhoto = contactToUpdate.photo!!
+
+            Glide.with(this).load(currentPhoto).into(view_contact_image_view)
 
             Toast.makeText(this, "Contact updated", Toast.LENGTH_SHORT).show()
         } else {

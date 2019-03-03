@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LABORATORIO7</string>
+    <string name="edit_contact">Editar Contacto</string>
+    <string name="save_contact">Crear Contacto</string>
 </resources>
