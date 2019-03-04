@@ -26,7 +26,6 @@ class AddEditContactActivity : AppCompatActivity() {
     companion object {
         private const val EXTERNAL_WRITE_REQUEST_CODE = 112
         private const val GALLERY = 1
-        private const val CAMERA = 2
     }
     private lateinit var contactViewModel: ContactViewModel
     private var currentId = -1
@@ -40,9 +39,12 @@ class AddEditContactActivity : AppCompatActivity() {
         number_picker_priority.minValue = 1
         number_picker_priority.maxValue = 10
 
+        //get the currentContactId (in case the user selected an item of the recyclerView) this will be different from -1
         val currentContactId = intent.getIntExtra("savedContactId", -1)
 
+        //in case the contact already exists
         if (currentContactId != -1){
+            //fill the editTexts and imageView with the currentContact Data
             edit_text_edit_contact_name.setText(intent.getStringExtra("savedContactName"))
             edit_text_edit_contact_phone.setText(intent.getStringExtra("savedContactPhone"))
             edit_text_edit_contact_email.setText(intent.getStringExtra("savedContactEmail"))
@@ -51,7 +53,9 @@ class AddEditContactActivity : AppCompatActivity() {
             if (intent.getByteArrayExtra("savedContactPhoto") != null){
                 Glide.with(this).load(intent.getByteArrayExtra("savedContactPhoto")).into(edit_contact_image_view)
             }
+            //set permissions for store access
             checkOrSetPermissions()
+            //set the current contact Id
             currentId = currentContactId
 
             text_view_edit_contact.text = getString(R.string.edit_contact)
@@ -65,6 +69,7 @@ class AddEditContactActivity : AppCompatActivity() {
         }
     }
 
+    //Starts the activity of selecting a photo from the gallery expecting the result
     private fun pickPhotoFromDevice(){
 
         val galleryIntent = Intent(
@@ -73,7 +78,8 @@ class AddEditContactActivity : AppCompatActivity() {
         )
         startActivityForResult(galleryIntent, GALLERY )
     }
-
+    //check if the app has the storage permissions, in case the app doesn´t have them, ask the user to
+    //give the permissions
     private fun checkOrSetPermissions(){
         val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
@@ -82,7 +88,7 @@ class AddEditContactActivity : AppCompatActivity() {
         }
     }
 
-
+    //set the toolbar options menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.add_contact_menu, menu)
         return true
@@ -106,13 +112,17 @@ class AddEditContactActivity : AppCompatActivity() {
         }
     }
 
+    //saves the contact with the specified data in the layout
     private fun saveContact(){
+        //extract the photo, compress it and cast it to byteArray type
         val photoAsBitmap = (edit_contact_image_view.drawable as BitmapDrawable).bitmap
         val outputStream = ByteArrayOutputStream()
         photoAsBitmap.compress(Bitmap.CompressFormat.PNG, 80, outputStream)
         val contactPhoto = outputStream.toByteArray()
+        //verify all the fields are filled
         if (edit_text_edit_contact_name.text.toString().isNotEmpty() && edit_text_edit_contact_phone.text.toString().isNotEmpty()
             && edit_text_edit_contact_email.text.toString().isNotEmpty()){
+            //pass the data to the MainActivity to save / edit the contact
             val data = Intent().apply {
                 if (currentId != -1) {
                     putExtra("savedContactId", currentId)
@@ -124,6 +134,7 @@ class AddEditContactActivity : AppCompatActivity() {
                 putExtra("savedContactPhoto", contactPhoto)
 
             }
+            //sets result that will be catched by the MainActivity onActivityResult method
             setResult(Activity.RESULT_OK, data)
             finish()
         } else {
@@ -131,9 +142,12 @@ class AddEditContactActivity : AppCompatActivity() {
         }
     }
 
+    //cathces the result of the Gallery intent
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        //always true
         if (requestCode == GALLERY){
+            //verify if data is not null and if it's not, convert the image to a bitmap and set it in the edit_contact_image_view
             if (data!=null){
                 val contentUri = data!!.data
                 try {

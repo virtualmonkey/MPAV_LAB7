@@ -12,7 +12,7 @@ import com.luisurbina.laboratorio7.data.Contact
 import kotlinx.android.synthetic.main.contact_item.view.*
 
 class ContactAdapter : ListAdapter<Contact, ContactAdapter.ContactHolder>(DIFF_CALLBACK) {
-
+    
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Contact>() {
             override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {

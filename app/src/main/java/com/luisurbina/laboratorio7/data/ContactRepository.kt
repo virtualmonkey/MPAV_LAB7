@@ -5,11 +5,15 @@ import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 
 class ContactRepository(application: Application) {
+
+    //instance of the ContactDao object
     private var contactDao: ContactDao
 
+    //list that will be updated automatically by listening to the data in the database
     private var allContacts: LiveData<List<Contact>>
 
     init {
+        //database instance in the actual application context
         val database: ContactDatabase = ContactDatabase.getInstance(
             application.applicationContext
         )!!
@@ -35,11 +39,9 @@ class ContactRepository(application: Application) {
         return allContacts
     }
 
-
-
-
-
     companion object {
+        //Here are all the declarations of the async tasks methods to operate de database
+        //using the contactDao object that will modify data in the contact_table entity.
         private class InsertContactAsyncTask(contactDao: ContactDao) : AsyncTask<Contact, Unit, Unit>(){
             val contactDao = contactDao
 

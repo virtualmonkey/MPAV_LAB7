@@ -3,6 +3,9 @@ package com.luisurbina.laboratorio7.data
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
+
+//Interface with all the operations to use over the database
+//it will be implemented by the ContactDatabase to operate over de data.
 @Dao
 interface ContactDao {
     @Insert

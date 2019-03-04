@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//Declare the Entity to store data
 @Entity (tableName = "contact_table")
 data class Contact(
     var name: String,
